@@ -6,7 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import com.wuhk.note.utils.ActivityManager;
 
 /**
- * Activity基类111
+ * Activity基类
  * Created by wuhk on 2016/5/4.
  */
 public class BaseActivity extends AppCompatActivity {
