@@ -3,15 +3,15 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_camera"
+            android:id="@+id/diary"
             android:icon="@drawable/ic_menu_camera"
             android:title="@string/diary" />
         <item
-            android:id="@+id/nav_gallery"
+            android:id="@+id/todo"
             android:icon="@drawable/ic_menu_gallery"
             android:title="@string/todo" />
         <item
-            android:id="@+id/nav_slideshow"
+            android:id="@+id/setting"
             android:icon="@drawable/ic_menu_slideshow"
             android:title="@string/setting" />
         <!--<item-->
@@ -23,11 +23,11 @@
     <item android:title="@string/communicate">
         <menu>
             <item
-                android:id="@+id/nav_share"
+                android:id="@+id/share"
                 android:icon="@drawable/ic_menu_share"
                 android:title="@string/share" />
             <item
-                android:id="@+id/nav_send"
+                android:id="@+id/upload"
                 android:icon="@drawable/ic_menu_send"
                 android:title="@string/upload" />
         </menu>
