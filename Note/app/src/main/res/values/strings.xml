@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name">Note</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+
+    <string name="note">Note</string>
+
+
+    <string name="refresh">刷新</string>
+    <string name="delete">删除选中</string>
+
+    <string name="diary">日记心情</string>
+    <string name="todo">备忘笔记</string>
+    <string name="setting">我的设置</string>
+
+    <string name="communicate">更多</string>
+    <string name="share">分享</string>
+    <string name="upload">上传百度云</string>
+
+</resources>
