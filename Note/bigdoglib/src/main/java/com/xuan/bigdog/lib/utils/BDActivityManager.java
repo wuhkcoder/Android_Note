@@ -1,4 +1,4 @@
-package com.wuhk.note.utils;
+package com.xuan.bigdog.lib.utils;
 
 import android.app.Activity;
 
@@ -9,9 +9,10 @@ import java.util.List;
 
 /**
  * 界面管理器
- * Created by wuhk on 2016/5/4.
+ *
+ * Created by xuan on 15/9/25.
  */
-public class ActivityManager {
+public class BDActivityManager {
     private static List<Activity> activityList = new ArrayList<Activity>();
 
     /**
@@ -83,4 +84,5 @@ public class ActivityManager {
             }
         }
     }
+
 }

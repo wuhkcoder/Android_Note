@@ -1,24 +1,25 @@
 package com.wuhk.note.activity;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 
-import com.wuhk.note.utils.ActivityManager;
+import com.xuan.bigapple.lib.ioc.app.BPActivity;
+import com.xuan.bigdog.lib.utils.BDActivityManager;
 
 /**
- * Activity基类
- * Created by wuhk on 2016/5/4.
+ * 所有Activity的基类
+ * Created by wuhk on 2016/5/5.
  */
-public class BaseActivity extends AppCompatActivity {
+public class BaseActivity extends BPActivity {
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ActivityManager.addActivity(this);
+        BDActivityManager.addActivity(this);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        ActivityManager.removeActivity(this);
+        BDActivityManager.removeActivity(this);
     }
 }
