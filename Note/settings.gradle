@@ -1,1 +1,1 @@
-include ':app' , ":bigdoglib"
+include ':app'

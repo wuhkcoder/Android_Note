@@ -18,6 +18,7 @@ import com.wuhk.note.R;
 import com.wuhk.note.activity.edit.EditDiaryActivity;
 import com.wuhk.note.activity.frame.fragment.Fragment1;
 import com.wuhk.note.activity.frame.fragment.Fragment2;
+import com.xuan.bigdog.lib.widgets.title.DGTitleLayout;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -28,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitleTextAppearance(MainActivity.this , R.style.ActionBar_TitleText);
         setSupportActionBar(toolbar);
 
         final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);

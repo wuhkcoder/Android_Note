@@ -17,11 +17,12 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
         instance = this;
+        initTitle();
         Bigapple.init(this);
         BigappleUI.init(this);
         DBHelper.init(Constants.DB_VERSION, Constants.DB_NAME, this);
         BPBitmapLoader.init(this);
-        initTitle();
+
     }
 
     //设置标题背景色
