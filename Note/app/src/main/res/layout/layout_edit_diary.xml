@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -8,4 +9,56 @@
         android:id="@+id/titleLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
+    <!--手动输入方式-->
+    <com.xuan.bigappleui.lib.view.scrollview.BUVerticalScrollView
+        android:visibility="visible"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <RelativeLayout
+                android:padding="@dimen/dimen_16"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/dateTv"
+                    android:layout_alignParentLeft="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/TitleFont"
+                    tools:text = "2016年05月07日"/>
+                <TextView
+                    android:id="@+id/weekTv"
+                    android:layout_centerInParent="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/TitleFont"
+                    tools:text = "星期六"/>
+                <TextView
+                    android:id="@+id/weatherTv"
+                    android:layout_alignParentRight="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/TitleFont"
+                    tools:text = "天气：晴"/>
+            </RelativeLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dimen_divider"
+                android:background="@color/color_divider"/>
+            <EditText
+                android:id="@+id/contentEt"
+                android:padding="@dimen/dimen_16"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dimen_0"
+                android:layout_weight="1"
+                android:background="@null"
+                android:hint="@string/diary_edit" />
+        </LinearLayout>
+    </com.xuan.bigappleui.lib.view.scrollview.BUVerticalScrollView>
+    <!--图文显示-->
+
+
 </LinearLayout>

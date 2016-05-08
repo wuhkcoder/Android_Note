@@ -16,68 +16,92 @@ import android.view.MenuItem;
 
 import com.wuhk.note.R;
 import com.wuhk.note.activity.edit.EditDiaryActivity;
+import com.wuhk.note.activity.edit.EditTodoActivity;
 import com.wuhk.note.activity.frame.fragment.Fragment1;
 import com.wuhk.note.activity.frame.fragment.Fragment2;
 import com.xuan.bigdog.lib.widgets.title.DGTitleLayout;
 
 
 public class MainActivity extends AppCompatActivity {
+    private Toolbar toolbar;
+    private FloatingActionButton fab;
+    private NavigationView navigationView;
+    private DrawerLayout drawer;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_main);
 
-        final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar)findViewById(R.id.toolbar);
+        fab = (FloatingActionButton)findViewById(R.id.fab);
+        navigationView = (NavigationView)findViewById(R.id.nav_view);
+        drawer = (DrawerLayout)findViewById(R.id.drawer_layout);
+
+        initWidgets();
+    }
+
+
+    private void initWidgets(){
+        //初始化Toolbar
         toolbar.setTitleTextAppearance(MainActivity.this , R.style.ActionBar_TitleText);
+        toolbar.setTitle("Diary");
         setSupportActionBar(toolbar);
 
-        final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        //初始化FloatActionBar
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent();
-                intent.setClass(MainActivity.this , EditDiaryActivity.class);
-                startActivity(intent);
+                if(toolbar.getTitle().equals("Diary")){
+                    Intent intent = new Intent();
+                    intent.setClass(MainActivity.this , EditDiaryActivity.class);
+                    startActivity(intent);
+                }else if (toolbar.getTitle().equals("TO-DOs")){
+                    Intent intent = new Intent();
+                    intent.setClass(MainActivity.this , EditTodoActivity.class);
+                    startActivity(intent);
+                }
 
             }
         });
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+
+        //初始化侧滑
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setCheckedItem(R.id.diary);
         getSupportFragmentManager().beginTransaction().replace(R.id.frame_content , new Fragment1()).commit();
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem item) {
-                // Handle navigation view item clicks here.
                 int id = item.getItemId();
 
                 if (id == R.id.diary) {
-                    getSupportFragmentManager().beginTransaction().replace(R.id.frame_content  , new Fragment1()).commit();
-                    toolbar.setTitle("日记");
+                    getSupportFragmentManager().beginTransaction().replace(R.id.frame_content, new Fragment1()).commit();
+                    toolbar.setTitle("Diary");
 
                 } else if (id == R.id.todo) {
-                    getSupportFragmentManager().beginTransaction().replace(R.id.frame_content  , new Fragment2()).commit();
-                    toolbar.setTitle("TODO");
+                    getSupportFragmentManager().beginTransaction().replace(R.id.frame_content, new Fragment2()).commit();
+                    toolbar.setTitle("TO-DOs");
 
                 } else if (id == R.id.setting) {
+                    Intent intent = new Intent();
+                    intent.setClass(MainActivity.this , EncryptActivity.class);
+                    startActivity(intent);
 
                 } else if (id == R.id.share) {
 
                 } else if (id == R.id.upload) {
 
                 }
-
-                DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
                 drawer.closeDrawer(GravityCompat.START);
                 return true;
             }
         });
+
+
     }
 
     @Override

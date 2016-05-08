@@ -20,4 +20,7 @@
     <string name="share">分享</string>
     <string name="upload">上传百度云</string>
 
+    <string name="diary_edit">写点什么吧~</string>
+    <string name="todo_edit">记下你要做的事情吧</string>
+
 </resources>

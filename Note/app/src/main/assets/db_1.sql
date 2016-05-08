@@ -4,10 +4,24 @@
 
 --联系人缓存表
 create table diary(
-    owner_user_id char(32) not null,
-    user_id char(32) not null,
-    name varchar(32) ,
-    avatar varchar (50),
-    primary key (user_id, owner_user_id)
+    id char(32) not null,
+    createTime varchar(32) ,
+    weekDay varchar (32),
+    weather varchar (32),
+    content TEXT,
+    pic TEXT,
+    encrypt smallint default 1,
+    password varchar(32),
+    primary key (id)
+)
+go
+
+--备忘缓存表
+create table todo(
+    id char(32) not null,
+    createTime varchar(32) ,
+    title TEXT,
+    content TEXT,
+    primary key (id)
 )
 go

@@ -8,8 +8,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.wuhk.note.R;
-import com.wuhk.note.data.DiaryData;
-import com.wuhk.note.utils.ToastUtil;
+import com.wuhk.note.entity.DiaryEntity;
 
 import java.util.List;
 
@@ -18,9 +17,9 @@ import java.util.List;
  */
 public class DiaryAdapter extends MBaseAdapter {
     private Context context;
-    private List<DiaryData> dataList;
+    private List<DiaryEntity> dataList;
 
-    public DiaryAdapter(Context context, List<DiaryData> dataList) {
+    public DiaryAdapter(Context context, List<DiaryEntity> dataList) {
         this.context = context;
         this.dataList = dataList;
     }
@@ -36,12 +35,14 @@ public class DiaryAdapter extends MBaseAdapter {
             view = LayoutInflater.from(context).inflate(R.layout.listitem_diary , null);
         }
 
-        TextView titleTv = (TextView)view.findViewById(R.id.titleTv);
+        TextView timeTv = (TextView)view.findViewById(R.id.timeTv);
         TextView contentTv = (TextView)view.findViewById(R.id.contentTv);
 
-        DiaryData data = dataList.get(position);
-        initTextView(titleTv , data.getTitle());
+        DiaryEntity data = dataList.get(position);
+        initTextView(timeTv , data.getCreateTime());
         initTextView(contentTv , data.getContent());
+//        initTextView(titleTv , data.getTitle());
+//        initTextView(contentTv , data.getContent());
 
         view.setOnClickListener(new View.OnClickListener() {
             @Override
