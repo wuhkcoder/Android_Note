@@ -19,7 +19,10 @@ import com.wuhk.note.activity.edit.EditDiaryActivity;
 import com.wuhk.note.activity.edit.EditTodoActivity;
 import com.wuhk.note.activity.frame.fragment.Fragment1;
 import com.wuhk.note.activity.frame.fragment.Fragment2;
+import com.wuhk.note.activity.my.SettingActivity;
 import com.xuan.bigdog.lib.widgets.title.DGTitleLayout;
+
+import java.io.Serializable;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -88,12 +91,8 @@ public class MainActivity extends AppCompatActivity {
 
                 } else if (id == R.id.setting) {
                     Intent intent = new Intent();
-                    intent.setClass(MainActivity.this , EncryptActivity.class);
+                    intent.setClass(MainActivity.this , SettingActivity.class);
                     startActivity(intent);
-
-                } else if (id == R.id.share) {
-
-                } else if (id == R.id.upload) {
 
                 }
                 drawer.closeDrawer(GravityCompat.START);

@@ -12,6 +12,7 @@ create table diary(
     pic TEXT,
     encrypt smallint default 1,
     password varchar(32),
+    modifyTime time,
     primary key (id)
 )
 go

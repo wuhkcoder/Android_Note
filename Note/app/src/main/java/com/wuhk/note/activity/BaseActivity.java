@@ -1,8 +1,12 @@
 package com.wuhk.note.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 
+import com.wuhk.note.adapter.DiaryAdapter;
 import com.xuan.bigapple.lib.ioc.app.BPActivity;
+import com.xuan.bigapple.lib.utils.ContextUtils;
+import com.xuan.bigapple.lib.utils.sharepreference.BPPreferences;
 import com.xuan.bigdog.lib.utils.BDActivityManager;
 
 /**

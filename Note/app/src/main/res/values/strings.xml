@@ -14,7 +14,7 @@
 
     <string name="diary">日记心情</string>
     <string name="todo">备忘笔记</string>
-    <string name="setting">我的设置</string>
+    <string name="setting">我的</string>
 
     <string name="communicate">更多</string>
     <string name="share">分享</string>
@@ -22,5 +22,8 @@
 
     <string name="diary_edit">写点什么吧~</string>
     <string name="todo_edit">记下你要做的事情吧</string>
+
+    <string name="about_des">"        "这是一款简洁易用的记事本软件，主要包含了两个大功能模块，分别是写日记和写备忘，对日记还有加密的功能，
+    另外，备忘模块可以记下我们容易忘记的事情。</string>
 
 </resources>

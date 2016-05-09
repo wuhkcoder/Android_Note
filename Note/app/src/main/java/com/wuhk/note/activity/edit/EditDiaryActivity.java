@@ -5,12 +5,14 @@ import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSON;
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.jopool.loaction.JLocation;
 import com.wuhk.note.R;
 import com.wuhk.note.activity.BaseActivity;
 import com.wuhk.note.activity.frame.fragment.Fragment1;
+import com.wuhk.note.adapter.DiaryAdapter;
 import com.wuhk.note.dao.DaoFactory;
 import com.wuhk.note.entity.DiaryEntity;
 import com.wuhk.note.task.GetCityCodeTask;
@@ -51,6 +53,8 @@ public class EditDiaryActivity extends BaseActivity {
     @InjectView(R.id.contentEt)
     private TextView contentEt;
 
+    private DiaryEntity diaryEntity;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,6 +71,17 @@ public class EditDiaryActivity extends BaseActivity {
             }
         });
         titleLayout.configTitle("写日记");
+
+        String jsonStr = getIntent().getStringExtra(DiaryAdapter.DIARY);
+        if (Validators.isEmpty(jsonStr)){
+            configWeather();
+            configDate();
+        }else{
+            diaryEntity = JSON.parseObject( jsonStr , DiaryEntity.class);
+            bindData(diaryEntity);
+        }
+
+
         titleLayout.configRightText("保存", new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -74,14 +89,21 @@ public class EditDiaryActivity extends BaseActivity {
                 if (Validators.isEmpty(content)){
                     ToastUtil.toast("请写点什么再保存吧");
                 }else{
-                    DiaryEntity diaryEntity = new DiaryEntity();
-                    diaryEntity.setId(UUIDUtils.createId());
-                    diaryEntity.setCreateTime(dateTv.getText().toString());
-                    diaryEntity.setWeekDay(weekTv.getText().toString());
-                    diaryEntity.setContent(content);
-                    diaryEntity.setWeather(weatherTv.getText().toString());
 
-                    DaoFactory.getDiaryDao().insertOrReplace(diaryEntity);
+                    if (null == diaryEntity){
+                        DiaryEntity diary = new DiaryEntity();
+                        diary.setId(UUIDUtils.createId());
+                        diary.setCreateTime(dateTv.getText().toString());
+                        diary.setWeekDay(weekTv.getText().toString());
+                        diary.setContent(content);
+                        diary.setWeather(weatherTv.getText().toString());
+                        diary.setModifyTime(new Date().getTime());
+                        DaoFactory.getDiaryDao().insertOrReplace(diary);
+                    }else{
+                        diaryEntity.setContent(content);
+                        diaryEntity.setModifyTime(new Date().getTime());
+                        DaoFactory.getDiaryDao().insertOrReplace(diaryEntity);
+                    }
                     Fragment1.isReload = true;
                     finish();
                 }
@@ -89,10 +111,17 @@ public class EditDiaryActivity extends BaseActivity {
         });
 
 
-        configWeather();
-        configDate();
     }
 
+
+    private void bindData(DiaryEntity data){
+        dateTv.setText(data.getCreateTime());
+        weekTv.setText(data.getWeekDay());
+        weatherTv.setText(data.getWeather());
+        contentEt.setText(data.getContent());
+    }
+
+    //设置日期
     private void configDate(){
         dateTv.setText(DateUtils.date2String(new Date(), "yyyy年MM月dd日"));
 
@@ -142,7 +171,6 @@ public class EditDiaryActivity extends BaseActivity {
                 getCityCodeTask.setAsyncTaskSuccessCallback(new AsyncTaskSuccessCallback<CityCodeData>() {
                     @Override
                     public void successCallback(Result<CityCodeData> result) {
-                        //TODO:
                         weatherTv.setText(result.getValue().getRetData().getWeather());
                     }
                 });

@@ -11,8 +11,9 @@ public class DiaryEntity {
     private String weather;
     private String content;
     private String pic;
-    private String encrypt;
+    private int encrypt;
     private String password;
+    private long modifyTime;
 
     public String getId() {
         return id;
@@ -62,11 +63,11 @@ public class DiaryEntity {
         this.pic = pic;
     }
 
-    public String getEncrypt() {
+    public int getEncrypt() {
         return encrypt;
     }
 
-    public void setEncrypt(String encrypt) {
+    public void setEncrypt(int encrypt) {
         this.encrypt = encrypt;
     }
 
@@ -76,5 +77,13 @@ public class DiaryEntity {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public long getModifyTime() {
+        return modifyTime;
+    }
+
+    public void setModifyTime(long modifyTime) {
+        this.modifyTime = modifyTime;
     }
 }
