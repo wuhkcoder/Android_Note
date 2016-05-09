@@ -3,6 +3,7 @@
 --每次升级请不要在原来的db_*.sql中修改，而是新创建一个文件，然后把数据库版本号+1
 
 --联系人缓存表
+--encrypt 1表示未加密，2表示加密
 create table diary(
     id char(32) not null,
     createTime varchar(32) ,
@@ -18,11 +19,12 @@ create table diary(
 go
 
 --备忘缓存表
-create table todo(
+--selected 1表示未选中，2表示选中
+create table todos(
     id char(32) not null,
-    createTime varchar(32) ,
-    title TEXT,
+    createTime time ,
     content TEXT,
+    selected smallint default 1,
     primary key (id)
 )
 go

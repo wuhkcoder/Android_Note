@@ -6,8 +6,8 @@ package com.wuhk.note.entity;
  */
 public class TodoEntity {
     private String id;
-    private String createTime;
-    private String title;
+    private long createTime;
+    private int selected;
     private String content;
 
     public String getId() {
@@ -18,20 +18,20 @@ public class TodoEntity {
         this.id = id;
     }
 
-    public String getCreateTime() {
+    public long getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(String createTime) {
+    public void setCreateTime(long createTime) {
         this.createTime = createTime;
     }
 
-    public String getTitle() {
-        return title;
+    public int getSelected() {
+        return selected;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setSelected(int selected) {
+        this.selected = selected;
     }
 
     public String getContent() {

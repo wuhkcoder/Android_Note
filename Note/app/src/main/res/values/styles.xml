@@ -44,9 +44,9 @@
         <item name="android:textSize">20sp</item>
     </style>
 
-    <style name="FontGray14">
+    <style name="FontGray16">
         <item name="android:textColor">@color/color_666666</item>
-        <item name="android:textSize">14sp</item>
+        <item name="android:textSize">16sp</item>
     </style>
 
     <style name="FontBlack16">

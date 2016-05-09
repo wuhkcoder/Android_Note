@@ -7,7 +7,7 @@
     <RelativeLayout
         android:background="@drawable/item_selector"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dimen_80">
+        android:layout_height="85dp">
         <LinearLayout
             android:layout_centerVertical="true"
             android:layout_toLeftOf="@+id/encryptIv"
@@ -19,7 +19,7 @@
                 android:id="@+id/timeTv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                style="@style/FontGray14"
+                style="@style/FontGray16"
                 tools:text = "卡卡那卡卡那难看"/>
             <TextView
                 android:id="@+id/contentTv"

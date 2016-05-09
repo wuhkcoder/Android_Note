@@ -20,6 +20,7 @@ import com.wuhk.note.activity.edit.EditTodoActivity;
 import com.wuhk.note.activity.frame.fragment.Fragment1;
 import com.wuhk.note.activity.frame.fragment.Fragment2;
 import com.wuhk.note.activity.my.SettingActivity;
+import com.wuhk.note.receiver.DelectSelectedReceiver;
 import com.xuan.bigdog.lib.widgets.title.DGTitleLayout;
 
 import java.io.Serializable;
@@ -50,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
         toolbar.setTitleTextAppearance(MainActivity.this , R.style.ActionBar_TitleText);
         toolbar.setTitle("Diary");
         setSupportActionBar(toolbar);
+
 
         //初始化FloatActionBar
         fab.setOnClickListener(new View.OnClickListener() {
@@ -117,6 +119,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
+
         return true;
     }
 
@@ -128,7 +131,10 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_delete) {
+            if (toolbar.getTitle().equals("TO_DOs")){
+                DelectSelectedReceiver.notifyReceiver();
+            }
             return true;
         }
 

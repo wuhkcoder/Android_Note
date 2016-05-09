@@ -33,4 +33,5 @@ dependencies {
     compile 'com.jungly:gridPasswordView:0.3'
     //    compile project(':bigdoglib')
     compile project(':locationlib')
+    compile project(':jsharelib')
 }

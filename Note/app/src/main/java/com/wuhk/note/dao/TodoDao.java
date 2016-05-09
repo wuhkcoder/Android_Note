@@ -8,6 +8,7 @@ import com.wuhk.note.entity.TodoEntity;
 import com.xuan.bigapple.lib.db.BPBaseDao;
 import com.xuan.bigapple.lib.db.callback.MultiRowMapper;
 import com.xuan.bigapple.lib.db.callback.SingleRowMapper;
+import com.xuan.bigapple.lib.utils.Validators;
 
 import java.util.List;
 
@@ -15,8 +16,9 @@ import java.util.List;
  * Created by wuhk on 2016/5/8.
  */
 public class TodoDao extends BPBaseDao{
-    private final String SQL_INSERT =  "INSERT OR　REPLACE INTO todo(id, createTime,title,content)VALUES(?,?,?,?)";
-    private final String SQL_FIND_ALL = "SELECT * FROM todo";
+    private final String SQL_INSERT =  "INSERT OR REPLACE INTO todos(id,createTime,content,selected) VALUES (?,?,?,?)";
+    private final String SQL_FIND_ALL = "SELECT * FROM todos ORDER BY createTime DESC";
+    private final String SQL_DELETE_BY_ID = "DELETE FROM todos WHERE id = ?";
 
     /**查找所有备忘
      *
@@ -26,6 +28,18 @@ public class TodoDao extends BPBaseDao{
 
         return bpQuery(SQL_FIND_ALL ,
                 new String[]{} , new MMultiRowMapper());
+    }
+
+    /**根据备忘id删除备忘
+     *
+     * @param id
+     */
+    public void deleteById(String id) {
+        if (Validators.isEmpty(id)) {
+            return;
+        }
+
+        bpUpdate(SQL_DELETE_BY_ID, new String[]{id});
     }
 
 
@@ -40,7 +54,7 @@ public class TodoDao extends BPBaseDao{
 
         bpUpdate(
                 SQL_INSERT,
-                new Object[]{todoEntity.getId() , todoEntity.getCreateTime() , todoEntity.getTitle() , todoEntity.getContent()}
+                new Object[]{todoEntity.getId() , todoEntity.getCreateTime(),todoEntity.getContent(),todoEntity.getSelected()}
         );
     }
     /**
@@ -51,9 +65,9 @@ public class TodoDao extends BPBaseDao{
         public TodoEntity mapRow(Cursor cursor, int n) throws SQLException {
             TodoEntity todoEntity = new TodoEntity();
             todoEntity.setId(cursor.getString(cursor.getColumnIndex("id")));
-            todoEntity.setCreateTime(cursor.getString(cursor.getColumnIndex("createTime")));
-            todoEntity.setTitle(cursor.getString(cursor.getColumnIndex("title")));
+            todoEntity.setCreateTime(cursor.getLong(cursor.getColumnIndex("createTime")));
             todoEntity.setContent(cursor.getString(cursor.getColumnIndex("content")));
+            todoEntity.setSelected(cursor.getInt(cursor.getColumnIndex("selected")));
 
             return todoEntity;
         }

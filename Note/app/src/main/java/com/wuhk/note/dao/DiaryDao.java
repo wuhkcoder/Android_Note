@@ -30,7 +30,7 @@ public class DiaryDao extends BPBaseDao{
         return ret;
     }
 
-    /**根据商品id删除商品
+    /**根据日记id删除日记
      *
      * @param id
      */

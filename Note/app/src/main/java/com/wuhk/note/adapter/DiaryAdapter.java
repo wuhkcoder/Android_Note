@@ -10,6 +10,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
+import com.jopool.jsharelib.JShare;
+import com.jopool.jsharelib.config.JShareConfig;
 import com.wuhk.note.R;
 import com.wuhk.note.activity.EncryptActivity;
 import com.wuhk.note.activity.edit.EditDiaryActivity;
@@ -135,7 +137,10 @@ public class DiaryAdapter extends MBaseAdapter {
                             } , new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
-                                    ToastUtil.toast("分享");
+                                    JShareConfig config = new JShareConfig();
+                                    config.setContext(context);
+                                    config.setText(data.getContent());
+                                    JShare.getInstance().share(config);
                                 }
                             }}).create();
                     d.show();
