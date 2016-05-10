@@ -1,13 +1,26 @@
 package com.wuhk.note.activity.edit;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
+import com.iflytek.cloud.ErrorCode;
+import com.iflytek.cloud.InitListener;
+import com.iflytek.cloud.RecognizerResult;
+import com.iflytek.cloud.SpeechConstant;
+import com.iflytek.cloud.SpeechError;
+import com.iflytek.cloud.SpeechRecognizer;
+import com.iflytek.cloud.ui.RecognizerDialog;
+import com.iflytek.cloud.ui.RecognizerDialogListener;
+import com.iflytek.sunflower.FlowerCollector;
 import com.jopool.loaction.JLocation;
 import com.wuhk.note.R;
 import com.wuhk.note.activity.BaseActivity;
@@ -19,6 +32,7 @@ import com.wuhk.note.task.GetCityCodeTask;
 import com.wuhk.note.task.GetWeatherTask;
 import com.wuhk.note.task.data.CityCodeData;
 import com.wuhk.note.task.data.WeatherData;
+import com.wuhk.note.utils.JsonParser;
 import com.wuhk.note.utils.LogUtil;
 import com.wuhk.note.utils.ToastUtil;
 import com.xuan.bigapple.lib.asynctask.callback.AsyncTaskFailCallback;
@@ -30,7 +44,12 @@ import com.xuan.bigapple.lib.utils.Validators;
 import com.xuan.bigapple.lib.utils.uuid.UUIDUtils;
 import com.xuan.bigdog.lib.widgets.title.DGTitleLayout;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.Date;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 import javax.xml.validation.Validator;
 
@@ -51,14 +70,42 @@ public class EditDiaryActivity extends BaseActivity {
     private TextView weekTv;
 
     @InjectView(R.id.contentEt)
-    private TextView contentEt;
+    private EditText contentEt;
+
+    @InjectView(R.id.speakBtn)
+    private Button speakBtn;
 
     private DiaryEntity diaryEntity;
+
+    private String oldStr;
+
+    // 语音听写对象
+    private SpeechRecognizer mIat;
+    // 语音听写UI
+    private RecognizerDialog mIatDialog;
+    // 用HashMap存储听写结果
+    private HashMap<String, String> mIatResults = new LinkedHashMap<String, String>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_edit_diary);
+
+        mIat = SpeechRecognizer.createRecognizer(EditDiaryActivity.this ,null);
+        mIatDialog  = new RecognizerDialog(EditDiaryActivity.this , mInitListener);
+        // 设置参数
+        setParam();
+        mIatDialog.setListener(new RecognizerDialogListener() {
+            @Override
+            public void onResult(RecognizerResult recognizerResult, boolean b) {
+                parseResult(recognizerResult);
+            }
+
+            @Override
+            public void onError(SpeechError speechError) {
+                ToastUtil.toast(speechError.getErrorDescription());
+            }
+        });
 
         initWidgets();
     }
@@ -80,7 +127,6 @@ public class EditDiaryActivity extends BaseActivity {
             diaryEntity = JSON.parseObject( jsonStr , DiaryEntity.class);
             bindData(diaryEntity);
         }
-
 
         titleLayout.configRightText("保存", new View.OnClickListener() {
             @Override
@@ -110,7 +156,16 @@ public class EditDiaryActivity extends BaseActivity {
             }
         });
 
-
+        speakBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                oldStr = contentEt.getText().toString();
+                mIatResults.clear();
+                // 显示听写对话框
+                mIatDialog.show();
+                ToastUtil.toast("请开始说话…");
+            }
+        });
     }
 
 
@@ -181,4 +236,60 @@ public class EditDiaryActivity extends BaseActivity {
         });
         JLocation.start();
     }
+
+    private void parseResult(RecognizerResult results) {
+        String text = JsonParser.parseIatResult(results.getResultString());
+
+        String sn = null;
+        // 读取json结果中的sn字段
+        try {
+            JSONObject resultJson = new JSONObject(results.getResultString());
+            sn = resultJson.optString("sn");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        mIatResults.put(sn, text);
+
+        StringBuffer resultBuffer = new StringBuffer();
+        for (String key : mIatResults.keySet()) {
+            resultBuffer.append(mIatResults.get(key));
+        }
+
+        String allStr = oldStr + resultBuffer.toString();
+//        ToastUtil.toast(allStr);
+        contentEt.setText(allStr);
+        contentEt.setSelection(allStr.length() -1);
+    }
+
+    /**
+     * 参数设置
+     *
+     * @return
+     */
+    public void setParam() {
+
+        mIat.setParameter(SpeechConstant.DOMAIN, "iat");
+        mIat.setParameter(SpeechConstant.LANGUAGE, "zh_cn");
+        mIat.setParameter(SpeechConstant.ACCENT, "mandarin ");
+        // 设置标点符号,设置为"0"返回结果无标点,设置为"1"返回结果有标点
+        mIat.setParameter(SpeechConstant.ASR_PTT, "1");
+
+        // 设置音频保存路径，保存音频格式支持pcm、wav，设置路径为sd卡请注意WRITE_EXTERNAL_STORAGE权限
+        // 注：AUDIO_FORMAT参数语记需要更新版本才能生效
+        mIat.setParameter(SpeechConstant.AUDIO_FORMAT,"wav");
+        mIat.setParameter(SpeechConstant.ASR_AUDIO_PATH, Environment.getExternalStorageDirectory()+"/msc/iat.wav");
+    }
+    /**
+     * 初始化监听器。
+     */
+    private InitListener mInitListener = new InitListener() {
+
+        @Override
+        public void onInit(int code) {
+            if (code != ErrorCode.SUCCESS) {
+                ToastUtil.toast("初始化失败，错误码：" + code);
+            }
+        }
+    };
 }

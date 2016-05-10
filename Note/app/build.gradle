@@ -1,9 +1,16 @@
 apply plugin: 'com.android.application'
 
 android {
+    signingConfigs {
+        config {
+            keyAlias 'jopool.keystore'
+            keyPassword 'jopool123456'
+            storeFile file('E:/project/MyProject/Android_Note/Note/app/keystore/jopool.keystore')
+            storePassword 'jopool123456'
+        }
+    }
     compileSdkVersion 23
     buildToolsVersion "23.0.2"
-
     defaultConfig {
         applicationId "com.wuhk.note"
         minSdkVersion 16
@@ -17,10 +24,16 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['src/main/jniLibs']
+        }
+    }
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:23.2.0'
     compile 'com.android.support:design:23.2.0'
@@ -34,4 +47,6 @@ dependencies {
     //    compile project(':bigdoglib')
     compile project(':locationlib')
     compile project(':jsharelib')
+    compile files('src/main/jniLibs/Msc.jar')
+    compile files('src/main/jniLibs/Sunflower.jar')
 }

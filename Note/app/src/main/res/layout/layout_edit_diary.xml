@@ -9,9 +9,7 @@
         android:id="@+id/titleLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
-    <!--手动输入方式-->
-    <com.xuan.bigappleui.lib.view.scrollview.BUVerticalScrollView
-        android:visibility="visible"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <LinearLayout
@@ -49,16 +47,21 @@
                 android:layout_height="@dimen/dimen_divider"
                 android:background="@color/color_divider"/>
             <EditText
+                android:gravity="top"
                 android:id="@+id/contentEt"
                 android:padding="@dimen/dimen_16"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/dimen_0"
-                android:layout_weight="1"
+                android:layout_height="match_parent"
                 android:background="@null"
-                android:hint="@string/diary_edit" />
+                android:hint="@string/diary_edit"/>
         </LinearLayout>
-    </com.xuan.bigappleui.lib.view.scrollview.BUVerticalScrollView>
-    <!--图文显示-->
-
-
+        <Button
+            android:id="@+id/speakBtn"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="说话"
+            android:padding="10dp"/>
+    </RelativeLayout>
 </LinearLayout>

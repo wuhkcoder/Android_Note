@@ -31,4 +31,6 @@ public class Constants {
      * 文件存储目录
      */
     public static String SDCARD;
+
+    public static String XFAPPID = "572cd1f8";
 }
