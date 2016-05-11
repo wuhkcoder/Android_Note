@@ -7,6 +7,11 @@
             android:icon="@drawable/ic_menu_slideshow"
             android:title="@string/diary" />
         <item
+            android:id="@+id/encryptDiary"
+            android:icon="@drawable/ic_menu_encrypt"
+            android:title="@string/encrypt_diary" />
+
+        <item
             android:id="@+id/todo"
             android:icon="@drawable/ic_menu_gallery"
             android:title="@string/todo" />
@@ -20,7 +25,7 @@
         <menu>
             <item
                 android:id="@+id/setting"
-                android:icon="@drawable/ic_menu_slideshow"
+                android:icon="@drawable/ic_men_my"
                 android:title="@string/setting" />
             <!--<item-->
                 <!--android:id="@+id/share"-->

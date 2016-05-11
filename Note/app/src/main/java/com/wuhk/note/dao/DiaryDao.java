@@ -4,6 +4,7 @@ import android.database.Cursor;
 import android.database.SQLException;
 
 import com.wuhk.note.entity.DiaryEntity;
+import com.wuhk.note.entity.enums.EncryptEnum;
 import com.xuan.bigapple.lib.db.BPBaseDao;
 import com.xuan.bigapple.lib.db.callback.MultiRowMapper;
 import com.xuan.bigapple.lib.db.callback.SingleRowMapper;
@@ -18,6 +19,7 @@ public class DiaryDao extends BPBaseDao{
     private final String SQL_INSERT = "INSERT OR REPLACE INTO diary(id,createTime, weekDay,weather,content,pic,encrypt,password , modifyTime) VALUES (?,?,?,?,?,?,?,?,?)";
     private final String SQL_FIND_ALL = "SELECT * FROM diary ORDER BY modifyTime DESC";
     private final String SQL_DELETE_BY_ID = "DELETE FROM diary WHERE id = ?";
+    private final String SQL_SELECT_BY_ENCRYPT = "SELECT * FROM diary WHERE encrypt = ? ORDER BY modifyTime DESC";
 
     /**查找所有日记
      *
@@ -40,6 +42,24 @@ public class DiaryDao extends BPBaseDao{
         }
 
         bpUpdate(SQL_DELETE_BY_ID, new String[]{id});
+    }
+
+    /**查找所有加密日记
+     *
+     * @return
+     */
+    public List<DiaryEntity> findEncryptDiary(){
+        List<DiaryEntity> ret = bpQuery(SQL_SELECT_BY_ENCRYPT , new String[]{String.valueOf(EncryptEnum.ENCRYPT.getValue())} , new MMultiRowMapper());
+        return ret;
+    }
+
+    /**查找所有普通日记
+     *
+     * @return
+     */
+    public List<DiaryEntity> findNormalDiary(){
+        List<DiaryEntity> ret = bpQuery(SQL_SELECT_BY_ENCRYPT , new String[]{String.valueOf(EncryptEnum.NORMAL.getValue())} , new MMultiRowMapper());
+        return ret;
     }
 
     /**插入或者更新日记

@@ -37,7 +37,6 @@ public class EncryptActivity extends BaseActivity {
     private GridPasswordView gridPasswordView;
 
     private String type;
-    private String mode;
     private DiaryEntity diaryEntity;
 
     @Override
@@ -49,7 +48,6 @@ public class EncryptActivity extends BaseActivity {
 
     private void initWidgets(){
         type = getIntent().getStringExtra(DiaryAdapter.TYPE);
-        mode = getIntent().getStringExtra(DiaryAdapter.MODE);
 
         titleLayout.configReturn(new View.OnClickListener() {
             @Override
@@ -75,17 +73,17 @@ public class EncryptActivity extends BaseActivity {
             @Override
             public void onInputFinish(String psw) {
                 //单篇设置密码
-                if (type.equals("setPass") && mode.equals("single")){
+                if (type.equals("setPass") ){
                     diaryEntity = JSON.parseObject(getIntent().getStringExtra(DiaryAdapter.DIARY) , DiaryEntity.class);
                     diaryEntity.setEncrypt(2);
                     diaryEntity.setPassword(psw);
                     DaoFactory.getDiaryDao().insertOrReplace(diaryEntity);
                     ToastUtil.toast("密码设置成功");
-                    Fragment1.isReload = true;
+
                     finish();
                 }
                 //输入密码解锁单篇
-                if (type.equals("inputPass") && mode.equals("single")){
+                if (type.equals("inputPass")){
                     diaryEntity = JSON.parseObject(getIntent().getStringExtra(DiaryAdapter.DIARY) , DiaryEntity.class);
                     if (diaryEntity.getPassword().equals(psw)){
                         //密码正确，进入日记
@@ -100,14 +98,13 @@ public class EncryptActivity extends BaseActivity {
                     }
                 }
                 //取消密码设置
-                if (type.equals("cancelPass") && mode.equals("single")){
+                if (type.equals("cancelPass")){
                     diaryEntity = JSON.parseObject(getIntent().getStringExtra(DiaryAdapter.DIARY) , DiaryEntity.class);
                     if (diaryEntity.getPassword().equals(psw)){
                         //密码正确，解除密码锁
                         diaryEntity.setEncrypt(1);
                         diaryEntity.setPassword("");
                         DaoFactory.getDiaryDao().insertOrReplace(diaryEntity);
-                        Fragment1.isReload = true;
                         ToastUtil.toast("解锁成功");
                         finish();
                     }else{
@@ -115,26 +112,26 @@ public class EncryptActivity extends BaseActivity {
                         gridPasswordView.clearPassword();
                     }
                 }
-                //全局密码设置
-                if (type.equals("setPass") && mode.equals("mutli")){
-                    BPPreferences.instance().putBoolean("isPassed" , true);
-                    BPPreferences.instance().putString("globalPass" , psw);
-                    finish();
-                }
-                //全局取消密码设置
-                if (type.equals("cancelPass") && mode.equals("mutli")){
-                    BPPreferences.instance().putBoolean("isPassed" , false);
-                    finish();
-                }
-                //全局加密解锁
-                if (type.equals("inputPass") && mode.equals("mutli")){
-                    if (BPPreferences.instance().getString("globalPass" , "").equals(psw)){
-                        Intent intent = new Intent();
-                        intent.setClass(EncryptActivity.this , MainActivity.class);
-                        startActivity(intent);
-                        finish();
-                    }
-                }
+//                //全局密码设置
+//                if (type.equals("setPass") && mode.equals("mutli")){
+//                    BPPreferences.instance().putBoolean("isPassed" , true);
+//                    BPPreferences.instance().putString("globalPass" , psw);
+//                    finish();
+//                }
+//                //全局取消密码设置
+//                if (type.equals("cancelPass") && mode.equals("mutli")){
+//                    BPPreferences.instance().putBoolean("isPassed" , false);
+//                    finish();
+//                }
+//                //全局加密解锁
+//                if (type.equals("inputPass") && mode.equals("mutli")){
+//                    if (BPPreferences.instance().getString("globalPass" , "").equals(psw)){
+//                        Intent intent = new Intent();
+//                        intent.setClass(EncryptActivity.this , MainActivity.class);
+//                        startActivity(intent);
+//                        finish();
+//                    }
+//                }
             }
         });
 

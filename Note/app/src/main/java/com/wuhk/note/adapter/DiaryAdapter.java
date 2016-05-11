@@ -10,6 +10,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
+import com.iflytek.thridparty.G;
 import com.jopool.jsharelib.JShare;
 import com.jopool.jsharelib.config.JShareConfig;
 import com.wuhk.note.R;
@@ -17,7 +18,9 @@ import com.wuhk.note.activity.EncryptActivity;
 import com.wuhk.note.activity.edit.EditDiaryActivity;
 import com.wuhk.note.dao.DaoFactory;
 import com.wuhk.note.entity.DiaryEntity;
+import com.wuhk.note.entity.enums.EncryptEnum;
 import com.wuhk.note.utils.ToastUtil;
+import com.xuan.bigapple.lib.utils.Validators;
 import com.xuan.bigappleui.lib.album.BUAlbum;
 import com.xuan.bigdog.lib.dialog.DGSingleSelectDialog;
 
@@ -52,44 +55,45 @@ public class DiaryAdapter extends MBaseAdapter {
         TextView timeTv = (TextView)view.findViewById(R.id.timeTv);
         final TextView contentTv = (TextView)view.findViewById(R.id.contentTv);
         ImageView encryptIv = (ImageView)view.findViewById(R.id.encryptIv);
+        ImageView smallPicIv = (ImageView)view.findViewById(R.id.smallPicIv);
 
         final DiaryEntity data = dataList.get(position);
+
+
         initTextView(timeTv , data.getCreateTime());
         initTextView(contentTv , data.getContent());
+        if (Validators.isEmpty(data.getPic())){
+            smallPicIv.setVisibility(View.GONE);
+        }else{
+            smallPicIv.setVisibility(View.VISIBLE);
+            initImageView(smallPicIv , data.getPic());
+        }
 
-        if (data.getEncrypt() == 2){
-            //未加密
+        if (data.getEncrypt() == EncryptEnum.ENCRYPT.getValue()){
             encryptIv.setVisibility(View.VISIBLE);
         }else{
-            encryptIv.setVisibility(View.INVISIBLE);
+            encryptIv.setVisibility(View.GONE);
         }
 
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (data.getEncrypt() == 2){
-                    Intent intent = new Intent();
-                    intent.setClass(context , EncryptActivity.class);
-                    intent.putExtra(TYPE , "inputPass");
-                    intent.putExtra(MODE , "single");
-                    intent.putExtra(DIARY , JSON.toJSONString(data));
-                    context.startActivity(intent);
+                Intent intent = new Intent();
+                if (data.getEncrypt() == EncryptEnum.ENCRYPT.getValue()){
+                    intent.putExtra("diaryType" , true);
                 }else{
-                    //未加密
-                    Intent intent = new Intent();
-                    intent.setClass(context , EditDiaryActivity.class);
-                    intent.putExtra(DIARY , JSON.toJSONString(data));
-                    context.startActivity(intent);
+                    intent.putExtra("diaryType" , false);
                 }
-
-
+                intent.setClass(context , EditDiaryActivity.class);
+                intent.putExtra(DIARY , JSON.toJSONString(data));
+                context.startActivity(intent);
             }
         });
 
         view.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                if (data.getEncrypt() == 2){
+                if (data.getEncrypt() == EncryptEnum.ENCRYPT.getValue()){
                     //加密过了，需要解锁
                     DGSingleSelectDialog d = new DGSingleSelectDialog.Builder(context)
                             .setItemTextAndOnClickListener(new String[]{"删除该日记", "解锁"}, new View.OnClickListener[]{new View.OnClickListener() {
@@ -98,14 +102,12 @@ public class DiaryAdapter extends MBaseAdapter {
                                     DaoFactory.getDiaryDao().deleteById(data.getId());
                                     dataList.remove(data);
                                     notifyDataSetChanged();
-
                                 }
                             }, new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
                                     Intent intent = new Intent();
                                     intent.putExtra(TYPE , "cancelPass");
-                                    intent.putExtra(MODE , "single");
                                     intent.putExtra(DIARY , JSON.toJSONString(data));
                                     intent.setClass(context , EncryptActivity.class);
                                     context.startActivity(intent);
@@ -115,7 +117,7 @@ public class DiaryAdapter extends MBaseAdapter {
                     d.show();
                 }else{
                     DGSingleSelectDialog d = new DGSingleSelectDialog.Builder(context)
-                            .setItemTextAndOnClickListener(new String[]{"删除该日记", "加密" ,"分享"}, new View.OnClickListener[]{new View.OnClickListener() {
+                            .setItemTextAndOnClickListener(new String[]{"删除该日记", "加密"}, new View.OnClickListener[]{new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
                                     DaoFactory.getDiaryDao().deleteById(data.getId());
@@ -134,15 +136,7 @@ public class DiaryAdapter extends MBaseAdapter {
                                     context.startActivity(intent);
 
                                 }
-                            } , new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    JShareConfig config = new JShareConfig();
-                                    config.setContext(context);
-                                    config.setText(data.getContent());
-                                    JShare.getInstance().share(config);
-                                }
-                            }}).create();
+                            } }).create();
                     d.show();
                 }
 

@@ -14,6 +14,7 @@
 
     <string name="diary">日记心情</string>
     <string name="todo">备忘笔记</string>
+    <string name="encrypt_diary">加密日记</string>
     <string name="setting">我的</string>
 
     <string name="communicate">更多</string>

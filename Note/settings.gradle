@@ -1,1 +1,1 @@
-include ':app' , ":locationlib" , ":jsharelib"
+include ':app' , ":locationlib" , ":jsharelib" , ':zypcommonlib'

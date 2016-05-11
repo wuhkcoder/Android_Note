@@ -5,9 +5,8 @@
       <module fileurl="file://$PROJECT_DIR$/Note.iml" filepath="$PROJECT_DIR$/Note.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/jsharelib/jsharelib.iml" filepath="$PROJECT_DIR$/jsharelib/jsharelib.iml" />
-      <module fileurl="file://$PROJECT_DIR$/jsharelib/jsharelib.iml" filepath="$PROJECT_DIR$/jsharelib/jsharelib.iml" />
       <module fileurl="file://$PROJECT_DIR$/locationlib/locationlib.iml" filepath="$PROJECT_DIR$/locationlib/locationlib.iml" />
-      <module fileurl="file://$PROJECT_DIR$/locationlib/locationlib.iml" filepath="$PROJECT_DIR$/locationlib/locationlib.iml" />
+      <module fileurl="file://$PROJECT_DIR$/zypcommonlib/zypcommonlib.iml" filepath="$PROJECT_DIR$/zypcommonlib/zypcommonlib.iml" />
     </modules>
   </component>
 </project>

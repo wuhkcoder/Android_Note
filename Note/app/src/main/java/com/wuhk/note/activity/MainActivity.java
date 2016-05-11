@@ -21,9 +21,10 @@ import com.wuhk.note.activity.frame.fragment.Fragment1;
 import com.wuhk.note.activity.frame.fragment.Fragment2;
 import com.wuhk.note.activity.my.SettingActivity;
 import com.wuhk.note.receiver.DelectSelectedReceiver;
-import com.xuan.bigdog.lib.widgets.title.DGTitleLayout;
+import com.wuhk.note.receiver.RefreshNormalDiaryReceiver;
+import com.wuhk.note.utils.ToastUtil;
+import com.xuan.bigapple.lib.utils.sharepreference.BPPreferences;
 
-import java.io.Serializable;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -31,6 +32,9 @@ public class MainActivity extends AppCompatActivity {
     private FloatingActionButton fab;
     private NavigationView navigationView;
     private DrawerLayout drawer;
+
+    public static boolean passSucceed;
+    private int lastCheckedId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +49,17 @@ public class MainActivity extends AppCompatActivity {
         initWidgets();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (passSucceed){
+            lastCheckedId = R.id.encryptDiary;
+            getSupportFragmentManager().beginTransaction().replace(R.id.frame_content, new Fragment1()).commit();
+            toolbar.setTitle("Diary");
+            passSucceed = false;
+        }
+        navigationView.setCheckedItem(lastCheckedId);
+    }
 
     private void initWidgets(){
         //初始化Toolbar
@@ -60,6 +75,11 @@ public class MainActivity extends AppCompatActivity {
                 if(toolbar.getTitle().equals("Diary")){
                     Intent intent = new Intent();
                     intent.setClass(MainActivity.this , EditDiaryActivity.class);
+                    if (lastCheckedId == R.id.diary){
+                        intent.putExtra("diaryType" , false);
+                    }else if (lastCheckedId == R.id.encryptDiary){
+                        intent.putExtra("diaryType" , true);
+                    }
                     startActivity(intent);
                 }else if (toolbar.getTitle().equals("TO-DOs")){
                     Intent intent = new Intent();
@@ -77,6 +97,7 @@ public class MainActivity extends AppCompatActivity {
         toggle.syncState();
 
         navigationView.setCheckedItem(R.id.diary);
+        lastCheckedId = R.id.diary;
         getSupportFragmentManager().beginTransaction().replace(R.id.frame_content , new Fragment1()).commit();
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -84,18 +105,36 @@ public class MainActivity extends AppCompatActivity {
                 int id = item.getItemId();
 
                 if (id == R.id.diary) {
+                    lastCheckedId = R.id.diary;
                     getSupportFragmentManager().beginTransaction().replace(R.id.frame_content, new Fragment1()).commit();
                     toolbar.setTitle("Diary");
+                    RefreshNormalDiaryReceiver.notifyReceiver(false);
+                }
+                if (id == R.id.encryptDiary) {
+                    boolean isHavePass = BPPreferences.instance().getBoolean("isHavePass" , false);
+                    if (isHavePass){
+                        //输入密码
+                        Intent intent = new Intent();
+                        intent.setClass(MainActivity.this , DiaryPassActivity.class);
+                        intent.putExtra("operate" , "input");
+                        startActivity(intent);
+                    }else{
+                        //设置密码
+                        Intent intent = new Intent();
+                        intent.setClass(MainActivity.this , DiaryPassActivity.class);
+                        intent.putExtra("operate" , "set");
+                        startActivity(intent);
+                    }
 
-                } else if (id == R.id.todo) {
+                }
+                else if (id == R.id.todo) {
+                    lastCheckedId = R.id.todo;
                     getSupportFragmentManager().beginTransaction().replace(R.id.frame_content, new Fragment2()).commit();
                     toolbar.setTitle("TO-DOs");
-
                 } else if (id == R.id.setting) {
                     Intent intent = new Intent();
                     intent.setClass(MainActivity.this , SettingActivity.class);
                     startActivity(intent);
-
                 }
                 drawer.closeDrawer(GravityCompat.START);
                 return true;
@@ -132,7 +171,8 @@ public class MainActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_delete) {
-            if (toolbar.getTitle().equals("TO_DOs")){
+            ToastUtil.toast("设置");
+            if (lastCheckedId == R.id.todo){
                 DelectSelectedReceiver.notifyReceiver();
             }
             return true;

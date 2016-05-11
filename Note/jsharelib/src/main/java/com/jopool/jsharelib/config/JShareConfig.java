@@ -16,7 +16,6 @@ public class JShareConfig {
     private String comment;//comment是我对这条分享的评论，仅在人人网和QQ空间使用
     private String site;//site是分享此内容的网站名称，仅在QQ空间使用
     private String siteUrl;//siteUrl是分享此内容的网站地址，仅在QQ空间使用
-    private boolean haveNativePic;//是否有本地图片
 
     public Context getContext() {
         return context;
@@ -90,11 +89,4 @@ public class JShareConfig {
         this.siteUrl = siteUrl;
     }
 
-    public boolean isHaveNativePic() {
-        return haveNativePic;
-    }
-
-    public void setHaveNativePic(boolean haveNativePic) {
-        this.haveNativePic = haveNativePic;
-    }
 }

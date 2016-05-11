@@ -32,5 +32,22 @@ public class Constants {
      */
     public static String SDCARD;
 
+    /**讯飞AppId
+     *
+     */
     public static String XFAPPID = "572cd1f8";
+
+
+    public static String SDCARD_NOTE = SDCARD + "/note/";
+
+    public static final String SDCARD_NOTE_DIARY_TEMP_CAMREA = SDCARD_NOTE + "diary/temp/camrea.jpg";
+
+    public static final String SDCARD_NOTE_DIARY_EDIT = SDCARD_NOTE + "diary/edit/";
+
+    /**
+     * 图片限制宽高
+     */
+    public static final int IMAGE_LIMIT_SIZE = 500;
+
+
 }

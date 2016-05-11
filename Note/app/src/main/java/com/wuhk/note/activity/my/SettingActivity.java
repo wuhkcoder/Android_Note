@@ -26,9 +26,9 @@ public class SettingActivity extends BaseActivity{
 
     @InjectView(R.id.aboutLayout)
     private LinearLayout aboutLayout;
-
-    @InjectView(R.id.buttonIv)
-    private IVButtonBox buttonTv;
+//
+//    @InjectView(R.id.buttonIv)
+//    private IVButtonBox buttonTv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,25 +55,25 @@ public class SettingActivity extends BaseActivity{
         });
 
         boolean isPassed = BPPreferences.instance().getBoolean("isPassed" , false);
-        buttonTv.setChecked(isPassed);
+//        buttonTv.setChecked(isPassed);
 
-        buttonTv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent();
-                intent.setClass(SettingActivity.this , EncryptActivity.class);
-                intent.putExtra(DiaryAdapter.MODE , "mutli");
-                if (buttonTv.isChecked()){
-                    ToastUtil.toast("开启");
-                    intent.putExtra(DiaryAdapter.TYPE , "setPass");
-                }else{
-                    ToastUtil.toast("关闭");
-                    intent.putExtra(DiaryAdapter.TYPE , "cancelPass");
-                }
-
-                startActivity(intent);
-            }
-        });
+//        buttonTv.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent();
+//                intent.setClass(SettingActivity.this , EncryptActivity.class);
+//                intent.putExtra(DiaryAdapter.MODE , "mutli");
+//                if (buttonTv.isChecked()){
+//                    ToastUtil.toast("开启");
+//                    intent.putExtra(DiaryAdapter.TYPE , "setPass");
+//                }else{
+//                    ToastUtil.toast("关闭");
+//                    intent.putExtra(DiaryAdapter.TYPE , "cancelPass");
+//                }
+//
+//                startActivity(intent);
+//            }
+//        });
     }
 
 }

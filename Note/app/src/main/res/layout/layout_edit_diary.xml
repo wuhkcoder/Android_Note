@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -10,9 +11,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
     <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
         <LinearLayout
+            android:layout_above="@+id/extendOpLayout"
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -46,22 +48,92 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dimen_divider"
                 android:background="@color/color_divider"/>
-            <EditText
-                android:gravity="top"
-                android:id="@+id/contentEt"
-                android:padding="@dimen/dimen_16"
+            <com.xuan.bigappleui.lib.view.scrollview.BUVerticalScrollView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@null"
-                android:hint="@string/diary_edit"/>
+                android:layout_height="match_parent">
+                <LinearLayout
+                    android:id="@+id/contentLayout"
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <ImageView
+                        android:visibility="gone"
+                        android:layout_gravity="center_horizontal"
+                        android:id="@+id/picIv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:scaleType="centerCrop"
+                        android:src="@mipmap/logo"
+                        />
+                    <EditText
+                        android:gravity="top"
+                        android:id="@+id/contentEt"
+                        android:padding="@dimen/dimen_16"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@null"
+                        android:hint="@string/diary_edit"/>
+                </LinearLayout>
+            </com.xuan.bigappleui.lib.view.scrollview.BUVerticalScrollView>
         </LinearLayout>
-        <Button
-            android:id="@+id/speakBtn"
+        <LinearLayout
+            android:id="@+id/extendOpLayout"
+            android:paddingBottom="5dp"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
+            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="说话"
-            android:padding="10dp"/>
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:gravity="center">
+                <android.support.design.widget.FloatingActionButton
+                    android:id="@+id/addPicBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/add_pic"
+                    app:backgroundTint="@color/color_theme" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:gravity="center">
+                <android.support.design.widget.FloatingActionButton
+                    android:id="@+id/speakBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/voice"
+                    app:backgroundTint="#eb6100" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:gravity="center">
+                <android.support.design.widget.FloatingActionButton
+                    android:id="@+id/shareBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_menu_share"
+                    app:backgroundTint="@color/colorAccent" />
+            </LinearLayout>
+
+        </LinearLayout>
+    <!--<Button-->
+        <!--android:id="@+id/speakBtn"-->
+        <!--android:layout_alignParentBottom="true"-->
+        <!--android:layout_centerHorizontal="true"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="说话"-->
+        <!--android:padding="10dp"/>-->
     </RelativeLayout>
 </LinearLayout>
