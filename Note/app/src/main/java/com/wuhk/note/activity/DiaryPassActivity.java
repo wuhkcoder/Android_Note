@@ -70,19 +70,19 @@ public class DiaryPassActivity extends BaseActivity {
                     String myPass = BPPreferences.instance().getString("myPassword" , "");
                     if (myPass.equals(psw)){
                         MainActivity.passSucceed = true;
-                        finish();
+                        Fragment1.loadByEncrpt = true;
 //                        RefreshNormalDiaryReceiver.notifyReceiver(true);
-                        Fragment1.reloadEncrypt = true;
+                        finish();
                     }else{
                         ToastUtil.toast("密码错误，请重新输入");
                         gridPasswordView.clearPassword();
                     }
                 }else if (operate.equals("set")){
-                    BPPreferences.instance().putBoolean("isHavePass" , true);
-                    BPPreferences.instance().putString("myPassword" , psw);
+                    BPPreferences.instance().putBoolean("isHavePass", true);
+                    BPPreferences.instance().putString("myPassword", psw);
                     MainActivity.passSucceed = true;
+                    Fragment1.loadByEncrpt = true;
 //                    RefreshNormalDiaryReceiver.notifyReceiver(true);
-                    Fragment1.reloadEncrypt = true;
                     finish();
                 }
             }

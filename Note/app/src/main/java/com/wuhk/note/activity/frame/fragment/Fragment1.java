@@ -28,7 +28,8 @@ public class Fragment1 extends BaseFragment{
     private DiaryAdapter diaryAdapter;
     private List<DiaryEntity> dataList = new ArrayList<DiaryEntity>();
 
-    public static boolean reloadEncrypt;
+    public static boolean loadByEncrpt;
+
     private RefreshNormalDiaryReceiver refreshNormalDiaryReceiver;//刷新日记
     @Override
     protected int initFragmentView() {
@@ -37,8 +38,17 @@ public class Fragment1 extends BaseFragment{
 
     @Override
     protected void initFragmentWidgets(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        loadData(reloadEncrypt);
+        diaryAdapter = new DiaryAdapter(getActivity() , dataList);
+        listView.setAdapter(diaryAdapter);
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        loadData(loadByEncrpt);
+        loadByEncrpt = false;
+    }
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,14 +69,12 @@ public class Fragment1 extends BaseFragment{
     }
 
     private void loadData(boolean isEncrypt){
-        reloadEncrypt =false;
         dataList.clear();
         if (isEncrypt){
-            dataList = DaoFactory.getDiaryDao().findEncryptDiary();
+            dataList.addAll(DaoFactory.getDiaryDao().findEncryptDiary());
         }else{
-            dataList = DaoFactory.getDiaryDao().findNormalDiary();
+            dataList.addAll(DaoFactory.getDiaryDao().findNormalDiary());
         }
-        diaryAdapter = new DiaryAdapter(getContext() , dataList);
-        listView.setAdapter(diaryAdapter);
+        diaryAdapter.notifyDataSetChanged();
     }
 }

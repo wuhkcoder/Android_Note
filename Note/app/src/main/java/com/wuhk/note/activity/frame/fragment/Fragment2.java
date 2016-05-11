@@ -36,6 +36,8 @@ public class Fragment2 extends BaseFragment{
 
     @Override
     protected void initFragmentWidgets(LayoutInflater inflater,ViewGroup container, Bundle savedInstanceState) {
+        todosAdapter = new TodosAdapter(getActivity() , dataList);
+        listView.setAdapter(todosAdapter);
         loadData();
     }
 
@@ -73,8 +75,7 @@ public class Fragment2 extends BaseFragment{
     private void loadData(){
         isReload = false;
         dataList.clear();
-        dataList = DaoFactory.getTodoDao().findALl();
-        todosAdapter = new TodosAdapter(getContext() , dataList);
-        listView.setAdapter(todosAdapter);
+        dataList.addAll(DaoFactory.getTodoDao().findALl());
+        todosAdapter.notifyDataSetChanged();
     }
 }

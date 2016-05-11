@@ -19,7 +19,6 @@ public class CheckPassActivity extends BaseActivity {
             Intent intent = new Intent();
             intent.setClass(CheckPassActivity.this , EncryptActivity.class);
             intent.putExtra(DiaryAdapter.TYPE , "inputPass");
-            intent.putExtra(DiaryAdapter.MODE , "mutli");
             startActivity(intent);
             finish();
         }else{

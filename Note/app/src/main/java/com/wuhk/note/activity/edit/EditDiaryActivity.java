@@ -62,6 +62,7 @@ import com.xuan.bigapple.lib.ioc.InjectView;
 import com.xuan.bigapple.lib.utils.BitmapUtils;
 import com.xuan.bigapple.lib.utils.DateUtils;
 import com.xuan.bigapple.lib.utils.Validators;
+import com.xuan.bigapple.lib.utils.sharepreference.BPPreferences;
 import com.xuan.bigapple.lib.utils.uuid.UUIDUtils;
 import com.xuan.bigappleui.lib.album.BUAlbum;
 import com.xuan.bigappleui.lib.album.entity.ImageItem;
@@ -326,8 +327,10 @@ public class EditDiaryActivity extends BaseActivity {
                 DiaryEntity diary = new DiaryEntity();
                 if (isEncrypt){
                     diary.setEncrypt(EncryptEnum.ENCRYPT.getValue());
+                    diary.setPassword(BPPreferences.instance().getString("myPassword" , ""));
                 }else{
                     diary.setEncrypt(EncryptEnum.NORMAL.getValue());
+                    diary.setPassword("");
                 }
                 diary.setPic(picFileName);
                 diary.setId(UUIDUtils.createId());

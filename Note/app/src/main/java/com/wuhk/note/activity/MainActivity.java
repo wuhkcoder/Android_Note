@@ -13,6 +13,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
 
 import com.wuhk.note.R;
 import com.wuhk.note.activity.edit.EditDiaryActivity;
@@ -32,6 +33,8 @@ public class MainActivity extends AppCompatActivity {
     private FloatingActionButton fab;
     private NavigationView navigationView;
     private DrawerLayout drawer;
+    private ImageView rightIv;
+    private ImageView leftIv;
 
     public static boolean passSucceed;
     private int lastCheckedId;
@@ -45,6 +48,8 @@ public class MainActivity extends AppCompatActivity {
         fab = (FloatingActionButton)findViewById(R.id.fab);
         navigationView = (NavigationView)findViewById(R.id.nav_view);
         drawer = (DrawerLayout)findViewById(R.id.drawer_layout);
+        leftIv = (ImageView)findViewById(R.id.leftIv);
+        rightIv = (ImageView)findViewById(R.id.rightIv);
 
         initWidgets();
     }
@@ -57,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
             getSupportFragmentManager().beginTransaction().replace(R.id.frame_content, new Fragment1()).commit();
             toolbar.setTitle("Diary");
             passSucceed = false;
+            configDiaryMenu();
         }
         navigationView.setCheckedItem(lastCheckedId);
     }
@@ -98,6 +104,7 @@ public class MainActivity extends AppCompatActivity {
 
         navigationView.setCheckedItem(R.id.diary);
         lastCheckedId = R.id.diary;
+        configDiaryMenu();
         getSupportFragmentManager().beginTransaction().replace(R.id.frame_content , new Fragment1()).commit();
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -109,6 +116,7 @@ public class MainActivity extends AppCompatActivity {
                     getSupportFragmentManager().beginTransaction().replace(R.id.frame_content, new Fragment1()).commit();
                     toolbar.setTitle("Diary");
                     RefreshNormalDiaryReceiver.notifyReceiver(false);
+                    configDiaryMenu();
                 }
                 if (id == R.id.encryptDiary) {
                     boolean isHavePass = BPPreferences.instance().getBoolean("isHavePass" , false);
@@ -131,6 +139,23 @@ public class MainActivity extends AppCompatActivity {
                     lastCheckedId = R.id.todo;
                     getSupportFragmentManager().beginTransaction().replace(R.id.frame_content, new Fragment2()).commit();
                     toolbar.setTitle("TO-DOs");
+                    rightIv.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            //删除已标记的备忘
+                            ToastUtil.toast("删除标记的备忘");
+//                            DelectSelectedReceiver.notifyReceiver();
+                        }
+                    });
+
+                    leftIv.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            //TODO:搜索
+                            ToastUtil.toast("备忘搜索");
+
+                        }
+                    });
                 } else if (id == R.id.setting) {
                     Intent intent = new Intent();
                     intent.setClass(MainActivity.this , SettingActivity.class);
@@ -140,7 +165,6 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
         });
-
 
     }
 
@@ -157,7 +181,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
+//        getMenuInflater().inflate(R.menu.main, menu);
 
         return true;
     }
@@ -170,14 +194,32 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_delete) {
-            ToastUtil.toast("设置");
-            if (lastCheckedId == R.id.todo){
-                DelectSelectedReceiver.notifyReceiver();
-            }
-            return true;
-        }
+//        if (id == R.id.action_delete) {
+//            ToastUtil.toast("设置");
+//            if (lastCheckedId == R.id.todo){
+//                DelectSelectedReceiver.notifyReceiver();
+//            }
+//            return true;
+//        }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void configDiaryMenu(){
+        rightIv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //时间删选
+                ToastUtil.toast("日记筛选");
+            }
+        });
+
+        leftIv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //搜索
+                ToastUtil.toast("日记搜索");
+            }
+        });
     }
 }
