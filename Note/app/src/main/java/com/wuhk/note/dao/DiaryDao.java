@@ -23,7 +23,7 @@ public class DiaryDao extends BPBaseDao{
     private final String SQL_DELETE_BY_ID = "DELETE FROM diary WHERE id = ?";
     private final String SQL_SELECT_BY_ENCRYPT = "SELECT * FROM diary WHERE encrypt = ? ORDER BY modifyTime DESC";
     private final String SQL_SELECT_BY_CONTENT = "SELECT * FROM diary WHERE encrypt = 1 AND content LIKE ?";
-    private final String SQL_SELECT_BY_CREATETIME = "SELECT * FROM diary WHERE encrypt = 1 AND createTime IN (";
+    private final String SQL_SELECT_BY_CREATETIME = "SELECT * FROM diary WHERE encrypt = 1 AND createTime IN (?)";
 
     /**查找所有日记
      *
@@ -40,20 +40,11 @@ public class DiaryDao extends BPBaseDao{
      *
      * @return
      */
-    public List<DiaryEntity> findByTime(String time , int length){
-        if (length < 1){
-            return  null;
-        }else{
-            StringBuilder sb = new StringBuilder();
-            sb.append("?");
-            for (int i = 1; i < length ; i++){
-                sb.append(",?");
-            }
-            List<DiaryEntity> ret = bpQuery(SQL_SELECT_BY_CREATETIME+sb.toString() + ")" ,
-                    new String[]{time} , new MMultiRowMapper());
-            LogUtil.e(SqlUtils.getSQL(SQL_SELECT_BY_CREATETIME, new String[]{time} ));
-            return ret;
-        }
+    public List<DiaryEntity> findByTime(String time){
+        List<DiaryEntity> ret = bpQuery(SQL_SELECT_BY_CREATETIME ,
+                new String[]{time} , new MMultiRowMapper());
+        LogUtil.e(SqlUtils.getSQL(SQL_SELECT_BY_CREATETIME, new String[]{time} ));
+        return ret;
 
     }
 

@@ -33,6 +33,7 @@ public class Fragment1 extends BaseFragment{
     private DiaryAdapter diaryAdapter;
     private List<DiaryEntity> dataList = new ArrayList<DiaryEntity>();
 
+
     public static boolean reloadEncrypt;
     private RefreshNormalDiaryReceiver refreshNormalDiaryReceiver;//刷新日记
     private DiaryLoadByDateReceiver diaryLoadByDateReceiver;//时间筛选刷新
@@ -65,10 +66,9 @@ public class Fragment1 extends BaseFragment{
             public void refreByDate(String time) {
                 dataList.clear();
                 String[] times = time.split(",");
-//                for(int i = 0; i < times.length ; i++){
-//                    dataList.addAll(DaoFactory.getDiaryDao().findByTime(times[i]));
-//                }
-                dataList.addAll(DaoFactory.getDiaryDao().findByTime(time , time.length()));
+                for(int i = 0; i < times.length ; i++){
+                    dataList.addAll(DaoFactory.getDiaryDao().findByTime(times[i]));
+                }
                 diaryAdapter.notifyDataSetChanged();
                 noDataView.showIfEmpty(dataList);
             }
