@@ -49,7 +49,7 @@ public class DiaryDao extends BPBaseDao{
             for (int i = 1; i < length ; i++){
                 sb.append(",?");
             }
-            List<DiaryEntity> ret = bpQuery(SQL_SELECT_BY_CREATETIME+sb.toString() + ");" ,
+            List<DiaryEntity> ret = bpQuery(SQL_SELECT_BY_CREATETIME+sb.toString() + ")" ,
                     new String[]{time} , new MMultiRowMapper());
             LogUtil.e(SqlUtils.getSQL(SQL_SELECT_BY_CREATETIME, new String[]{time} ));
             return ret;
