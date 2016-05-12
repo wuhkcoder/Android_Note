@@ -65,9 +65,10 @@ public class Fragment1 extends BaseFragment{
             public void refreByDate(String time) {
                 dataList.clear();
                 String[] times = time.split(",");
-                for(int i = 0; i < times.length ; i++){
-                    dataList.addAll(DaoFactory.getDiaryDao().findByTime(times[i]));
-                }
+//                for(int i = 0; i < times.length ; i++){
+//                    dataList.addAll(DaoFactory.getDiaryDao().findByTime(times[i]));
+//                }
+                dataList.addAll(DaoFactory.getDiaryDao().findByTime(time , time.length()));
                 diaryAdapter.notifyDataSetChanged();
                 noDataView.showIfEmpty(dataList);
             }

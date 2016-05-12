@@ -70,7 +70,7 @@ public class DiaryPassActivity extends BaseActivity {
                     String myPass = BPPreferences.instance().getString("myPassword" , "");
                     if (myPass.equals(psw)){
                         MainActivity.passSucceed = true;
-                        Fragment1.loadByEncrpt = true;
+                        Fragment1.reloadEncrypt = true;
 //                        RefreshNormalDiaryReceiver.notifyReceiver(true);
                         finish();
                     }else{
@@ -81,7 +81,7 @@ public class DiaryPassActivity extends BaseActivity {
                     BPPreferences.instance().putBoolean("isHavePass", true);
                     BPPreferences.instance().putString("myPassword", psw);
                     MainActivity.passSucceed = true;
-                    Fragment1.loadByEncrpt = true;
+                    Fragment1.reloadEncrypt = true;
 //                    RefreshNormalDiaryReceiver.notifyReceiver(true);
                     finish();
                 }
