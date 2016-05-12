@@ -6,6 +6,8 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.wuhk.note.R;
+import com.wuhk.note.dao.DaoFactory;
+import com.wuhk.note.entity.DiaryEntity;
 import com.wuhk.note.utils.ToastUtil;
 import com.xuan.bigapple.lib.ioc.InjectView;
 import com.xuan.bigapple.lib.utils.Validators;
@@ -59,6 +61,10 @@ public class ForgetPassActivity extends BaseActivity {
                             ToastUtil.toast("密码需要6位");
                         }else{
                             BPPreferences.instance().putString("myPassword" , pass);
+                            for (DiaryEntity diaryEntity : DaoFactory.getDiaryDao().findEncryptDiary()){
+                                diaryEntity.setPassword(pass);
+                                DaoFactory.getDiaryDao().insertOrReplace(diaryEntity);
+                            }
                             ToastUtil.toast("密码重设成功");
                             finish();
                         }

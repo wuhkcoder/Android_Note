@@ -36,7 +36,6 @@ public class DiaryAdapter extends MBaseAdapter {
 
     public static String DIARY = "diary";
     public static String TYPE = "type";
-    public static String MODE = "mode";
     public DiaryAdapter(Context context, List<DiaryEntity> dataList) {
         this.context = context;
         this.dataList = dataList;
@@ -132,7 +131,6 @@ public class DiaryAdapter extends MBaseAdapter {
                                     if (BPPreferences.instance().getBoolean("isHavePass" , false)){
                                         Intent intent = new Intent();
                                         intent.putExtra(TYPE , "setPass");
-                                        intent.putExtra(MODE , "single");
                                         intent.putExtra(DIARY , JSON.toJSONString(data));
                                         intent.setClass(context , EncryptActivity.class);
                                         context.startActivity(intent);

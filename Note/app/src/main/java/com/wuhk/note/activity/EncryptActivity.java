@@ -59,8 +59,6 @@ public class EncryptActivity extends BaseActivity {
 
         if (type.equals("setPass")){
             passDesTv.setText("输入日记本密码，将日记移动至加密日记本");
-        }else if (type.equals("inputPass")){
-            passDesTv.setText("输入密码，对该日记加密");
         }else if (type.equals("cancelPass")){
             passDesTv.setText("输入日记本密码，将日记移动至普通日记");
         }
@@ -74,35 +72,24 @@ public class EncryptActivity extends BaseActivity {
             @Override
             public void onInputFinish(String psw) {
                 //单篇设置密码
-                if (type.equals("setPass") ){
-                    diaryEntity = JSON.parseObject(getIntent().getStringExtra(DiaryAdapter.DIARY) , DiaryEntity.class);
-                    diaryEntity.setEncrypt(2);
-                    diaryEntity.setPassword(psw);
-                    DaoFactory.getDiaryDao().insertOrReplace(diaryEntity);
-                    ToastUtil.toast("加密成功，请到加密日记栏查看");
-                    RefreshNormalDiaryReceiver.notifyReceiver(false);
-
-                    finish();
-                }
-                //输入密码解锁单篇
-                if (type.equals("inputPass")){
-                    diaryEntity = JSON.parseObject(getIntent().getStringExtra(DiaryAdapter.DIARY) , DiaryEntity.class);
-                    if (diaryEntity.getPassword().equals(psw)){
-                        //密码正确，进入日记
-                        Intent intent = new Intent();
-                        intent.setClass(EncryptActivity.this , EditDiaryActivity.class);
-                        intent.putExtra(DiaryAdapter.DIARY , JSON.toJSONString(diaryEntity));
-                        startActivity(intent);
+                if (type.equals("setPass")){
+                    if (BPPreferences.instance().getString("myPassword" , "").equals(psw)){
+                        diaryEntity = JSON.parseObject(getIntent().getStringExtra(DiaryAdapter.DIARY) , DiaryEntity.class);
+                        diaryEntity.setEncrypt(2);
+                        diaryEntity.setPassword(psw);
+                        DaoFactory.getDiaryDao().insertOrReplace(diaryEntity);
+                        ToastUtil.toast("加密成功，请到加密日记栏查看");
+                        RefreshNormalDiaryReceiver.notifyReceiver(false);
                         finish();
                     }else{
                         ToastUtil.toast("密码错误，请重新输入");
-                        gridPasswordView.clearPassword();
                     }
+
                 }
                 //取消密码设置
                 if (type.equals("cancelPass")){
                     diaryEntity = JSON.parseObject(getIntent().getStringExtra(DiaryAdapter.DIARY) , DiaryEntity.class);
-                    if (diaryEntity.getPassword().equals(psw)){
+                    if (BPPreferences.instance().getString("myPassword" , "").equals(psw)){
                         //密码正确，解除密码锁
                         diaryEntity.setEncrypt(1);
                         diaryEntity.setPassword("");
