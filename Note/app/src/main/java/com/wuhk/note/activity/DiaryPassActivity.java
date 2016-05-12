@@ -54,9 +54,9 @@ public class DiaryPassActivity extends BaseActivity {
         }).configTitle("密码锁");
 
         if (operate.equals("input")){
-            passDesTv.setText("输入密码");
+            passDesTv.setText("输入密码，打开日记本");
         }else if (operate.equals("set")){
-            passDesTv.setText("设置密码");
+            passDesTv.setText("设置加密日记本的密码");
         }
         gridPasswordView.setOnPasswordChangedListener(new GridPasswordView.OnPasswordChangedListener() {
             @Override

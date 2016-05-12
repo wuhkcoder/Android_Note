@@ -72,57 +72,54 @@ public class ZypCalendarDateAdapter extends BaseAdapter {
 //            }
             contentTv.setText(date);
 
-            if (calendarDateEntity.isCanClick()){
-                if(calendarDateEntity.isSelected()){
-                    selectView.setVisibility(View.VISIBLE);
-                    contentTv.setTextColor(Color.WHITE);
-                }else{
-                    selectView.setVisibility(View.GONE);
-                    contentTv.setTextColor(Color.parseColor("#333333"));
-                }
-                view.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        String dateStr = getCompleteDate(calendarDateEntity.getDate());
-                        if (selectView.getVisibility() == View.VISIBLE){
-                            selectView.setVisibility(View.GONE);
-                            contentTv.setTextColor(Color.parseColor("#333333"));
-                            calendarDateEntity.setIsSelected(false);
-                        }else{
-                            selectView.setVisibility(View.VISIBLE);
-                            contentTv.setTextColor(Color.WHITE);
-                            calendarDateEntity.setIsSelected(true);
+
+            if(calendarDateEntity.isSelected()){
+                selectView.setVisibility(View.VISIBLE);
+                contentTv.setTextColor(Color.WHITE);
+            }else{
+                selectView.setVisibility(View.GONE);
+                contentTv.setTextColor(Color.parseColor("#333333"));
+            }
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String dateStr = getCompleteDate(calendarDateEntity.getDate());
+                    if (selectView.getVisibility() == View.VISIBLE){
+                        selectView.setVisibility(View.GONE);
+                        contentTv.setTextColor(Color.parseColor("#333333"));
+                        calendarDateEntity.setIsSelected(false);
+                    }else{
+                        selectView.setVisibility(View.VISIBLE);
+                        contentTv.setTextColor(Color.WHITE);
+                        calendarDateEntity.setIsSelected(true);
+                    }
+                    if (null != ZypCalendarLayout.selectedList && !ZypCalendarLayout.selectedList.isEmpty()){
+                        boolean isAdd = false;
+                        for (String str : ZypCalendarLayout.selectedList){
+                            if (str.equals(dateStr)){
+                                ZypCalendarLayout.selectedList.remove(str);
+                                isAdd = false;
+                                break;
+                            }else{
+                                isAdd = true;
+                            }
                         }
-                        if (null != ZypCalendarLayout.selectedList && !ZypCalendarLayout.selectedList.isEmpty()){
-                            boolean isAdd = false;
-                            for (String str : ZypCalendarLayout.selectedList){
-                                if (str.equals(dateStr)){
-                                    ZypCalendarLayout.selectedList.remove(str);
-                                    isAdd = false;
-                                    break;
-                                }else{
-                                    isAdd = true;
-                                }
-                            }
-                            if (isAdd){
-                                ZypCalendarLayout.selectedList.add(dateStr);
-                            }
-                        }else{
+                        if (isAdd){
                             ZypCalendarLayout.selectedList.add(dateStr);
                         }
-
-
-                        if (null != zypDateSelCallback){
-                            zypDateSelCallback.doWithSelDate(contentTv.getText().toString());
-                        }
-                        if (null != zypDateAllSelNotifyCallback){
-                            zypDateAllSelNotifyCallback.judge();
-                        }
+                    }else{
+                        ZypCalendarLayout.selectedList.add(dateStr);
                     }
-                });
-            }else{
-                contentTv.setTextColor(Color.parseColor("#999999"));
-            }
+
+
+                    if (null != zypDateSelCallback){
+                        zypDateSelCallback.doWithSelDate(contentTv.getText().toString());
+                    }
+                    if (null != zypDateAllSelNotifyCallback){
+                        zypDateAllSelNotifyCallback.judge();
+                    }
+                }
+            });
 
         }
         return view;

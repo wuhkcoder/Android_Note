@@ -2,6 +2,7 @@ package com.wuhk.note.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -13,7 +14,6 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ImageView;
 
 import com.wuhk.note.R;
 import com.wuhk.note.activity.edit.EditDiaryActivity;
@@ -22,6 +22,7 @@ import com.wuhk.note.activity.frame.fragment.Fragment1;
 import com.wuhk.note.activity.frame.fragment.Fragment2;
 import com.wuhk.note.activity.my.SettingActivity;
 import com.wuhk.note.receiver.DelectSelectedReceiver;
+import com.wuhk.note.receiver.DiaryLoadByDateReceiver;
 import com.wuhk.note.receiver.RefreshNormalDiaryReceiver;
 import com.wuhk.note.utils.ToastUtil;
 import com.xuan.bigapple.lib.utils.sharepreference.BPPreferences;
@@ -33,11 +34,14 @@ public class MainActivity extends AppCompatActivity {
     private FloatingActionButton fab;
     private NavigationView navigationView;
     private DrawerLayout drawer;
-    private ImageView rightIv;
-    private ImageView leftIv;
 
     public static boolean passSucceed;
     private int lastCheckedId;
+
+    public static final int myRequestCode = 123;
+
+    private Handler handler = new Handler();
+    private boolean backPressed;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,8 +52,6 @@ public class MainActivity extends AppCompatActivity {
         fab = (FloatingActionButton)findViewById(R.id.fab);
         navigationView = (NavigationView)findViewById(R.id.nav_view);
         drawer = (DrawerLayout)findViewById(R.id.drawer_layout);
-        leftIv = (ImageView)findViewById(R.id.leftIv);
-        rightIv = (ImageView)findViewById(R.id.rightIv);
 
         initWidgets();
     }
@@ -62,7 +64,6 @@ public class MainActivity extends AppCompatActivity {
             getSupportFragmentManager().beginTransaction().replace(R.id.frame_content, new Fragment1()).commit();
             toolbar.setTitle("Diary");
             passSucceed = false;
-            configDiaryMenu();
         }
         navigationView.setCheckedItem(lastCheckedId);
     }
@@ -104,7 +105,6 @@ public class MainActivity extends AppCompatActivity {
 
         navigationView.setCheckedItem(R.id.diary);
         lastCheckedId = R.id.diary;
-        configDiaryMenu();
         getSupportFragmentManager().beginTransaction().replace(R.id.frame_content , new Fragment1()).commit();
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -116,7 +116,6 @@ public class MainActivity extends AppCompatActivity {
                     getSupportFragmentManager().beginTransaction().replace(R.id.frame_content, new Fragment1()).commit();
                     toolbar.setTitle("Diary");
                     RefreshNormalDiaryReceiver.notifyReceiver(false);
-                    configDiaryMenu();
                 }
                 if (id == R.id.encryptDiary) {
                     boolean isHavePass = BPPreferences.instance().getBoolean("isHavePass" , false);
@@ -139,23 +138,6 @@ public class MainActivity extends AppCompatActivity {
                     lastCheckedId = R.id.todo;
                     getSupportFragmentManager().beginTransaction().replace(R.id.frame_content, new Fragment2()).commit();
                     toolbar.setTitle("TO-DOs");
-                    rightIv.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            //删除已标记的备忘
-                            ToastUtil.toast("删除标记的备忘");
-//                            DelectSelectedReceiver.notifyReceiver();
-                        }
-                    });
-
-                    leftIv.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            //TODO:搜索
-                            ToastUtil.toast("备忘搜索");
-
-                        }
-                    });
                 } else if (id == R.id.setting) {
                     Intent intent = new Intent();
                     intent.setClass(MainActivity.this , SettingActivity.class);
@@ -166,25 +148,49 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
     }
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            if (backPressed){
+                finish();
+            }else{
+                ToastUtil.toast("再按一次退出程序");
+                backPressed = true;
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        backPressed = false;
+                    }
+                } , 3000L);
+            }
         }
+
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-//        getMenuInflater().inflate(R.menu.main, menu);
-
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        menu.clear();
+        if (lastCheckedId == R.id.todo){
+            getMenuInflater().inflate(R.menu.main, menu);
+        }else if (lastCheckedId == R.id.diary){
+            getMenuInflater().inflate(R.menu.diary_menu , menu);
+        }else if (lastCheckedId == R.id.encryptDiary){
+            getMenuInflater().inflate(R.menu.encrypt_menu , menu);
+        }
         return true;
     }
+//
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        // Inflate the menu; this adds items to the action bar if it is present.
+////        getMenuInflater().inflate(R.menu.main, menu);
+//        return true;
+//    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -194,32 +200,31 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-//        if (id == R.id.action_delete) {
-//            ToastUtil.toast("设置");
-//            if (lastCheckedId == R.id.todo){
-//                DelectSelectedReceiver.notifyReceiver();
-//            }
-//            return true;
-//        }
+        if (id == R.id.action_delete) {
+            DelectSelectedReceiver.notifyReceiver();
+        }else if (id == R.id.action_search){
+            Intent intent = new Intent();
+            intent.setClass(MainActivity.this , SearchActivity.class);
+            startActivity(intent);
+        }else if (id == R.id.action_filter){
+            Intent intent = new Intent();
+            intent.setClass(MainActivity.this , CalendarSelectActivity.class);
+            startActivityForResult(intent , myRequestCode);
+        }else if (id == R.id.action_my){
+            Intent intent = new Intent();
+            intent.setClass(MainActivity.this , SettingActivity.class);
+            startActivity(intent);
+        }
 
-        return super.onOptionsItemSelected(item);
+        return true;
     }
 
-    private void configDiaryMenu(){
-        rightIv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //时间删选
-                ToastUtil.toast("日记筛选");
-            }
-        });
-
-        leftIv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //搜索
-                ToastUtil.toast("日记搜索");
-            }
-        });
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == myRequestCode && resultCode == CalendarSelectActivity.resultCode){
+            String dateStr = data.getStringExtra("date");
+            DiaryLoadByDateReceiver.notifyReceiver(dateStr);
+        }
     }
 }

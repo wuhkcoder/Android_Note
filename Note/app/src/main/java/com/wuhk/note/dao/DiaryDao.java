@@ -5,9 +5,11 @@ import android.database.SQLException;
 
 import com.wuhk.note.entity.DiaryEntity;
 import com.wuhk.note.entity.enums.EncryptEnum;
+import com.wuhk.note.utils.LogUtil;
 import com.xuan.bigapple.lib.db.BPBaseDao;
 import com.xuan.bigapple.lib.db.callback.MultiRowMapper;
 import com.xuan.bigapple.lib.db.callback.SingleRowMapper;
+import com.xuan.bigapple.lib.db.helper.SqlUtils;
 import com.xuan.bigapple.lib.utils.Validators;
 
 import java.util.List;
@@ -20,6 +22,8 @@ public class DiaryDao extends BPBaseDao{
     private final String SQL_FIND_ALL = "SELECT * FROM diary ORDER BY modifyTime DESC";
     private final String SQL_DELETE_BY_ID = "DELETE FROM diary WHERE id = ?";
     private final String SQL_SELECT_BY_ENCRYPT = "SELECT * FROM diary WHERE encrypt = ? ORDER BY modifyTime DESC";
+    private final String SQL_SELECT_BY_CONTENT = "SELECT * FROM diary WHERE encrypt = 1 AND content LIKE ?";
+    private final String SQL_SELECT_BY_CREATETIME = "SELECT * FROM diary WHERE encrypt = 1 AND createTime IN (?)";
 
     /**查找所有日记
      *
@@ -29,6 +33,28 @@ public class DiaryDao extends BPBaseDao{
 
         List<DiaryEntity> ret = bpQuery(SQL_FIND_ALL ,
                 new String[]{} , new MMultiRowMapper());
+        return ret;
+    }
+
+    /**查找所有日记
+     *
+     * @return
+     */
+    public List<DiaryEntity> findByTime(String time){
+
+        List<DiaryEntity> ret = bpQuery(SQL_SELECT_BY_CREATETIME ,
+                new String[]{time} , new MMultiRowMapper());
+        LogUtil.e(SqlUtils.getSQL(SQL_SELECT_BY_CREATETIME, new String[]{time} ));
+        return ret;
+    }
+
+    /**根据内容模糊查询
+     *
+     * @param content
+     * @return
+     */
+    public List<DiaryEntity> findByContent(String content){
+        List<DiaryEntity> ret = bpQuery(SQL_SELECT_BY_CONTENT , new String[]{content} , new MMultiRowMapper());
         return ret;
     }
 

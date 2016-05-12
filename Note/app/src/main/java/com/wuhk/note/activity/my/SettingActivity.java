@@ -4,14 +4,17 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.wuhk.note.R;
 import com.wuhk.note.activity.BaseActivity;
 import com.wuhk.note.activity.EncryptActivity;
+import com.wuhk.note.activity.ForgetPassActivity;
 import com.wuhk.note.adapter.DiaryAdapter;
 import com.wuhk.note.utils.ToastUtil;
 import com.wuhk.note.view.IVButtonBox;
 import com.xuan.bigapple.lib.ioc.InjectView;
+import com.xuan.bigapple.lib.utils.VersionUtils;
 import com.xuan.bigapple.lib.utils.sharepreference.BPPreferences;
 import com.xuan.bigdog.lib.widgets.title.DGTitleLayout;
 
@@ -26,9 +29,12 @@ public class SettingActivity extends BaseActivity{
 
     @InjectView(R.id.aboutLayout)
     private LinearLayout aboutLayout;
-//
-//    @InjectView(R.id.buttonIv)
-//    private IVButtonBox buttonTv;
+
+    @InjectView(R.id.forgetLayout)
+    private LinearLayout forgetLayout;
+
+    @InjectView(R.id.nameTv)
+    private TextView nameTv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,26 +60,16 @@ public class SettingActivity extends BaseActivity{
             }
         });
 
-        boolean isPassed = BPPreferences.instance().getBoolean("isPassed" , false);
-//        buttonTv.setChecked(isPassed);
+        forgetLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.setClass(SettingActivity.this , ForgetPassActivity.class);
+                startActivity(intent);
+            }
+        });
 
-//        buttonTv.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent = new Intent();
-//                intent.setClass(SettingActivity.this , EncryptActivity.class);
-//                intent.putExtra(DiaryAdapter.MODE , "mutli");
-//                if (buttonTv.isChecked()){
-//                    ToastUtil.toast("开启");
-//                    intent.putExtra(DiaryAdapter.TYPE , "setPass");
-//                }else{
-//                    ToastUtil.toast("关闭");
-//                    intent.putExtra(DiaryAdapter.TYPE , "cancelPass");
-//                }
-//
-//                startActivity(intent);
-//            }
-//        });
+        nameTv.setText("Note v" + VersionUtils.getVersionName());
     }
 
 }

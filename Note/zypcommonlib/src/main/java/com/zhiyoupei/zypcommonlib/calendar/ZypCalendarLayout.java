@@ -191,7 +191,6 @@ public class ZypCalendarLayout extends RelativeLayout {
                 String [] splitTime = time.split("-");
                 if (splitTime[0].equals(String.valueOf(mYear)) && splitTime[1].equals(getCompareMonth(mMonth))){
                     ZypCalendarDateEntity dateEntity = new ZypCalendarDateEntity();
-                    dateEntity.setCanClick(true);
                     dateEntity.setDate(splitTime[2]);
                     dateEntity.setIsSelected(true);
                     tempList.add(dateEntity);
@@ -234,15 +233,6 @@ public class ZypCalendarLayout extends RelativeLayout {
                 calendarDateEntity.setIsSelected(false);
             }
             calendarDateEntity.setDate(String.valueOf(i));
-            if (mYear < curYear){
-                calendarDateEntity.setCanClick(false);
-            }else if (mYear == curYear && mMonth < curMonth){
-                calendarDateEntity.setCanClick(false);
-            }else if (mYear == curYear && mMonth == curMonth && i < curDay){
-                calendarDateEntity.setCanClick(false);
-            }else{
-                calendarDateEntity.setCanClick(true);
-            }
             dataList.add(calendarDateEntity);
         }
         for (int i = 0 ; i < (42 - (num) -dayOfWeek) ; i++){
@@ -364,19 +354,11 @@ public class ZypCalendarLayout extends RelativeLayout {
      */
     public String getMultiSelDateStr(){
         StringBuilder dateStr = new StringBuilder();
-        String compareStr = getCurCompare();
         for (String string : selectedList){
             //在当前年月
-            if (string.indexOf(compareStr) != -1){
-                //小于当日
-                if (Integer.parseInt(string.split("-")[2]) >= curDay){
-                    dateStr.append(string);
-                    dateStr.append(",");
-                }
-            }else{
-                dateStr.append(string);
-                dateStr.append(",");
-            }
+            String[] des = string.split("-");
+            dateStr.append(des[0]+"年" + des[1]+ "月" + des[2] + "日");
+            dateStr.append(",");
         }
         if (!TextUtils.isEmpty(dateStr.toString())){
             dateStr.deleteCharAt(dateStr.length() -1);

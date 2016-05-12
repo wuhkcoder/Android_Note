@@ -7,7 +7,6 @@ package com.zhiyoupei.zypcommonlib.calendar;
 public class ZypCalendarDateEntity {
     private String date;
     private boolean isSelected;
-    private boolean canClick;
 
     public String getDate() {
         return date;
@@ -25,11 +24,4 @@ public class ZypCalendarDateEntity {
         this.isSelected = isSelected;
     }
 
-    public boolean isCanClick() {
-        return canClick;
-    }
-
-    public void setCanClick(boolean canClick) {
-        this.canClick = canClick;
-    }
 }

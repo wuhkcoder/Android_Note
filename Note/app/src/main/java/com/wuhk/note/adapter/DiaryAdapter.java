@@ -21,6 +21,7 @@ import com.wuhk.note.entity.DiaryEntity;
 import com.wuhk.note.entity.enums.EncryptEnum;
 import com.wuhk.note.utils.ToastUtil;
 import com.xuan.bigapple.lib.utils.Validators;
+import com.xuan.bigapple.lib.utils.sharepreference.BPPreferences;
 import com.xuan.bigappleui.lib.album.BUAlbum;
 import com.xuan.bigdog.lib.dialog.DGSingleSelectDialog;
 
@@ -35,6 +36,7 @@ public class DiaryAdapter extends MBaseAdapter {
 
     public static String DIARY = "diary";
     public static String TYPE = "type";
+    public static String MODE = "mode";
     public DiaryAdapter(Context context, List<DiaryEntity> dataList) {
         this.context = context;
         this.dataList = dataList;
@@ -95,7 +97,7 @@ public class DiaryAdapter extends MBaseAdapter {
                 if (data.getEncrypt() == EncryptEnum.ENCRYPT.getValue()){
                     //加密过了，需要解锁
                     DGSingleSelectDialog d = new DGSingleSelectDialog.Builder(context)
-                            .setItemTextAndOnClickListener(new String[]{"删除该日记", "取消加密"}, new View.OnClickListener[]{new View.OnClickListener() {
+                            .setItemTextAndOnClickListener(new String[]{"删除该日记", "解锁"}, new View.OnClickListener[]{new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
                                     DaoFactory.getDiaryDao().deleteById(data.getId());
@@ -116,7 +118,7 @@ public class DiaryAdapter extends MBaseAdapter {
                     d.show();
                 }else{
                     DGSingleSelectDialog d = new DGSingleSelectDialog.Builder(context)
-                            .setItemTextAndOnClickListener(new String[]{"删除该日记", "移动至加密日记"}, new View.OnClickListener[]{new View.OnClickListener() {
+                            .setItemTextAndOnClickListener(new String[]{"删除该日记", "加密"}, new View.OnClickListener[]{new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
                                     DaoFactory.getDiaryDao().deleteById(data.getId());
@@ -127,11 +129,17 @@ public class DiaryAdapter extends MBaseAdapter {
                             }, new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
-                                    Intent intent = new Intent();
-                                    intent.putExtra(TYPE , "setPass");
-                                    intent.putExtra(DIARY , JSON.toJSONString(data));
-                                    intent.setClass(context , EncryptActivity.class);
-                                    context.startActivity(intent);
+                                    if (BPPreferences.instance().getBoolean("isHavePass" , false)){
+                                        Intent intent = new Intent();
+                                        intent.putExtra(TYPE , "setPass");
+                                        intent.putExtra(MODE , "single");
+                                        intent.putExtra(DIARY , JSON.toJSONString(data));
+                                        intent.setClass(context , EncryptActivity.class);
+                                        context.startActivity(intent);
+                                    }else{
+                                        ToastUtil.toast("请先去加密日记本设置日记本密码");
+                                    }
+
 
                                 }
                             } }).create();

@@ -16,6 +16,15 @@
             <option value="$PROJECT_DIR$/zypcommonlib" />
           </set>
         </option>
+        <option name="myModules">
+          <set>
+            <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/jsharelib" />
+            <option value="$PROJECT_DIR$/locationlib" />
+            <option value="$PROJECT_DIR$/zypcommonlib" />
+          </set>
+        </option>
       </GradleProjectSettings>
     </option>
   </component>

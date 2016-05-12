@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_white">
+    <com.xuan.bigdog.lib.widgets.title.DGTitleLayout
+        android:id="@+id/titleLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:paddingRight="15dp"
+        android:paddingLeft="15dp"
+        android:layout_marginTop="30dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/save_phone"
+        android:textColor="#333333"
+        android:textSize="15sp"
+        />
+
+    <LinearLayout
+        android:layout_marginTop="20dp"
+        android:orientation="vertical"
+        android:background="@color/color_white"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp">
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:background="@color/dg_color_white">
+            <EditText
+                android:id="@+id/phoneEt"
+                android:background="@null"
+                android:singleLine="true"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textSize="15sp"
+                android:textColor="#333333"
+                android:hint="请输入手机号"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="18dp"/>
+        </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/color_divider"/>
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/sureBtn"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+        android:layout_marginTop="35dp"
+        android:layout_width="match_parent"
+        android:layout_height="49dp"
+        android:background="@drawable/sure_btn_selector"
+        android:textSize="16sp"
+        android:textColor="@color/color_white"
+        android:text="确定"
+        />
+
+</LinearLayout>

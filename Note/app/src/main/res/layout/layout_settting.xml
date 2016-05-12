@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/color_bg">
@@ -28,7 +29,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="Note V1.0"
+                tools:text="Note V1.0"
                 android:textColor="@color/color_white"
                 android:textSize="22sp"
                 />
@@ -58,7 +59,7 @@
                 android:layout_height="wrap_content"
                 android:textColor="#333333"
                 android:textSize="15sp"
-                android:text="关于"
+                android:text="关于Note"
                 android:layout_centerVertical="true"/>
             <ImageView
                 android:layout_width="wrap_content"
@@ -70,41 +71,39 @@
         </RelativeLayout>
     </LinearLayout>
 
-    <!--<LinearLayout-->
-        <!--android:layout_marginTop="10dp"-->
-        <!--android:id="@+id/passLayout"-->
-        <!--android:orientation="horizontal"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="55dp"-->
-        <!--android:background="@drawable/item_selector">-->
-        <!--<ImageView-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:src="@drawable/change_pass"-->
-            <!--android:layout_gravity="center_vertical"-->
-            <!--android:layout_marginLeft="10dp"-->
-            <!--/>-->
-        <!--<RelativeLayout-->
-            <!--android:layout_marginLeft="10dp"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="match_parent">-->
-            <!--<TextView-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:textColor="#333333"-->
-                <!--android:textSize="15sp"-->
-                <!--android:text="密码锁"-->
-                <!--android:layout_centerVertical="true"/>-->
-            <!--<com.wuhk.note.view.IVButtonBox-->
-                <!--android:id="@+id/buttonIv"-->
-                <!--android:src="@drawable/close"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_centerVertical="true"-->
-                <!--android:layout_alignParentRight="true"-->
-                <!--android:layout_marginRight="16dp"/>-->
-        <!--</RelativeLayout>-->
-    <!--</LinearLayout>-->
-
+    <LinearLayout
+        android:layout_marginTop="10dp"
+        android:id="@+id/forgetLayout"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:background="@drawable/item_selector">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/change_pass"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="10dp"
+            />
+        <RelativeLayout
+            android:layout_marginLeft="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#333333"
+                android:textSize="15sp"
+                android:text="忘记密码"
+                android:layout_centerVertical="true"/>
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/small_right_arrow"
+                android:layout_marginRight="10dp"/>
+        </RelativeLayout>
+    </LinearLayout>
 
 </LinearLayout>
